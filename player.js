@@ -183,7 +183,8 @@ const steps = json.data.structure.steps;
 for(let step of steps){
     if(step.action.type==="tip"){
     const target = step.action.selector;
-    console.log($(target));
+    debugger;
+    $(target)[0].title = step.action.contents["#content"];
 }
 
 }
