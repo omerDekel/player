@@ -180,14 +180,55 @@ const json = {
 
 const steps = json.data.structure.steps;
 
-for(let step of steps){
-    if(step.action.type==="tip"){
-    const target = step.action.selector;
-    debugger;
-    $(target)[0].title = step.action.contents["#content"];
+const tooltip = json.data.tiplates.tip;
+
+// let tooltipHtml = "";
+
+// for(let i=0;i<tooltip.length;i++){
+//     if(tooltip.charAt(i)!='"'){
+//         tooltipHtml+=tooltip.charAt(i);
+//     }else{
+//         tooltipHtml+="'";
+//     }
+// }
+
+// $(steps[0].action.selector).append(tooltip);
+
+$(steps[0].action.selector).append(tooltip)
+$(".popover-content [data-iridize-id]")[0].innerHTML = steps[0].action.contents["#content"];
+let elementIndex = 0;
+// for (let step of steps) {
+//     if (step.action.type === "tip") {
+//         const target = step.action.selector;
+//         debugger;
+//         $(target)[0].title = step.action.contents["#content"];
+//     }
+// }
+
+
+
+
+function setToolTipToNextElement(){
+    if( elementIndex >= 0 && elementIndex < steps.length){
+        debugger;
+        $(".popover-content [data-iridize-id]")[0].innerHTML = steps[elementIndex+1].action.contents["#content"];
+        $(steps[elementIndex + 1].action.selector).append($(steps[elementIndex].action.selector).find("[role=region]").detach());
+        elementIndex++;
+    }
 }
 
+function setToolTipToPrevElement(){
+    if(elementIndex<steps.length && elementIndex>0){
+        debugger;
+        $(".popover-content [data-iridize-id]")[0].innerHTML = steps[elementIndex-1].action.contents["#content"];
+        $(steps[elementIndex-1].action.selector).append($(steps[elementIndex].action.selector).find("[role=region]").detach());
+        elementIndex--;
+    }
 }
+
+$(".prev-btn.default-prev-btn").click(setToolTipToPrevElement);
+
+$(".next-btn").click(setToolTipToNextElement);
 
 
 
