@@ -1,5 +1,4 @@
-//Inject javascript into HTML pages from console
-
+//Inject javascript into HTML pages from console (thanks to https://gist.github.com/SantoshSrinivas79/69f235e0876a87c53668).
 var script = document.createElement('script');
 script.src = 'https://code.jquery.com/jquery-1.7.2.min.js';
 script.type = 'text/javascript';
@@ -119,7 +118,6 @@ class Player {
 
 }
 
-// The main function.
 setTimeout(function () {
     const url = "https://guidedlearning.oracle.com/player/latest/api/scenario/get/v_IlPvRLRWObwLnV5sTOaw/5szm2kaj/?callback=__5szm2kaj&refresh=true&env=dev&type=startPanel&vars%5Btype%5D=startPanel&sid=none&_=1582203987867";
     //Take out the json object from an endpoint to get a json guide.
