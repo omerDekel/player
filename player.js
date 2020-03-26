@@ -25,26 +25,8 @@ function logResults(json){
 const steps = jsonData.structure.steps;
 var editedSteps = [];
 const tooltip = jsonData.tiplates.tip;
-//var tipWidth = tooltip.width();
-//var tipHeight = tooltip.height();
-// let tooltipHtml = "";
-
-// for(let i=0;i<tooltip.length;i++){
-//     if(tooltip.charAt(i)!='"'){
-//         tooltipHtml+=tooltip.charAt(i);
-//     }else{
-//         tooltipHtml+="'";
-//     }
-// }
-
-// $(steps[0].action.selector).append(tooltip);
-
-// $(".popover-content [data-iridize-id]")[0].innerHTML = steps[0].action.contents["#content"];
-
-
 $("body").append(tooltip);
 
-// $(".popover-content [data-iridize-id]")[0].innerHTML = steps[0].action.contents["#content"];
 const tipHeight = 100;
 const tipWidth = 300;
 //styles
@@ -58,17 +40,15 @@ $(".stFooter")[0].style = "bottom: 0;position: absolute;left: 92px;";
 $("div[data-iridize-id=content]")[0].style = "position: absolute;top: 20px;text-align: center;width: 100%;";
 $(".steps-count")[0].style = "display:block;";
 
-// $(".steps-count [data-iridize-role=stepCount]")[0].innerText = elementIndex;
-// $(".steps-count [data-iridize-role=stepsCount]")[0].innerText = steps.length;
 $(".powered-by")[0].style = "display:none;";
 let elementIndex = 0;
 for (let step of steps) {
     //creating steps array without the last element and not-founded elements
     elementStepQ = $(step.action.selector);
-    if (step.id != "eol0" &&elementStepQ[0]) {
+    if (step.id != "eol0" && (elementStepQ[0])) {
             let leftNext = elementStepQ.offset().left;
             let topNext = elementStepQ.offset().top;    
-            //let location = steps[elementIndex].action.placement;
+            //calculate the loction of left and top of tip
             let tipTop = topNext + 10+elementStepQ.height();
             let tipLeft = leftNext;
             if(tipLeft + tipWidth > window.innerWidth) {
@@ -84,34 +64,22 @@ for (let step of steps) {
 
 // $("[role=region]").css("left",$(steps[0].action.selector).offset().left)
 // $("[role=region]").css("top",$(steps[0].action.selector).offset().top)
-setToolTipToNextElement();
+//setToolTipToNextElement();
+updateTootip(elementIndex);
+function updateTootip(index){
+    $("[role=region]").css("left",editedSteps[index].leftStep);
+    $("[role=region]").css("top",editedSteps[index].topStep);
 
+    $(".popover-content [data-iridize-id]")[0].innerHTML = editedSteps[index].content;
+    $(".steps-count [data-iridize-role=stepCount]")[0].innerText = (index+1);
+    $(".steps-count [data-iridize-role=stepsCount]")[0].innerText = editedSteps.length;
+
+}
 function setToolTipToNextElement(){
-    if(elementIndex < editedSteps.length){
-        /*let nextElement = $(editedSteps[elementIndex].action.selector);
-        if(nextElement[0]){
-            let leftNext = nextElement.offset().left;
-            let topNext = nextElement.offset().top;    
-            //let location = steps[elementIndex].action.placement;
-            let tipTop = topNext + 10+nextElement.height();
-            let tipLeft = leftNext;
-            if(tipLeft + tipWidth > window.innerWidth) {
-                tipLeft = window.innerWidth - (10+tipWidth);
-            }
-            if(tipTop +tipHeight> window.innerHeight){
-                tipTop = window.innerHeight - (10+tipHeight);
-            }*/
-        $("[role=region]").css("left",editedSteps[elementIndex].leftStep);
-        $("[role=region]").css("top",editedSteps[elementIndex].topStep);
-
-        $(".popover-content [data-iridize-id]")[0].innerHTML = editedSteps[elementIndex].content;
+    if(elementIndex+1 < editedSteps.length){
+        updateTootip(elementIndex+1);
         elementIndex++;
-        $(".steps-count [data-iridize-role=stepCount]")[0].innerText = elementIndex;
-        $(".steps-count [data-iridize-role=stepsCount]")[0].innerText = editedSteps.length;
-        /*}else{
-            console.log(" couldnt find " +editedSteps[elementIndex].action.selector);
-        }*/
-    }else if(elementIndex == editedSteps.length){
+    }else{
         //we got to the last step so close
         $("[role=region]").css("display","none");
     }
@@ -120,37 +88,9 @@ function setToolTipToNextElement(){
 
 function setToolTipToPrevElement(){
     debugger
-    if( elementIndex >1){
+    if( elementIndex-1 >=0){        
+        updateTootip(elementIndex-1);
         elementIndex--;
-        /*let nextElement = $(editedSteps[elementIndex].action.selector);
-        if(nextElement[0]){*/
-            /*let leftNext = nextElement.offset().left;
-            let topNext = nextElement.offset().top;    
-            //let location = steps[elementIndex].action.placement;
-            let tipTop = topNext + 10+nextElement.height();
-            let tipLeft = leftNext;
-            if(tipLeft + tipWidth > window.innerWidth) {
-                tipLeft = window.innerWidth - (10+tipWidth);
-            }
-            if(tipTop +tipHeight> window.innerHeight){
-                tipTop = window.innerHeight - (10+tipHeight);
-            }
-            $("[role=region]").css("left",tipLeft);
-            $("[role=region]").css("top",tipTop);
-
-            $(".popover-content [data-iridize-id]")[0].innerHTML = editedSteps[elementIndex].action.contents["#content"];
-           $(".steps-count [data-iridize-role=stepCount]")[0].innerText = elementIndex;
-           $(".steps-count [data-iridize-role=stepsCount]")[0].innerText = editedSteps.length;*/
-           $("[role=region]").css("left",editedSteps[elementIndex].leftStep);
-           $("[role=region]").css("top",editedSteps[elementIndex].topStep);
-   
-           $(".popover-content [data-iridize-id]")[0].innerHTML = editedSteps[elementIndex].content;
-           elementIndex++;
-           $(".steps-count [data-iridize-role=stepCount]")[0].innerText = elementIndex;
-           $(".steps-count [data-iridize-role=stepsCount]")[0].innerText = editedSteps.length;
-        /*}else{
-            console.log(" couldnt find " +editedSteps[elementIndex].action.selector);
-        }*/
     }
 }
 
